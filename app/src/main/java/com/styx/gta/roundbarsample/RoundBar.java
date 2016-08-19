@@ -53,7 +53,19 @@ public class RoundBar extends View {
         sPaint3=makePaint(color3);
 
     }
-
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int size;
+        int width = getMeasuredWidth();
+        int height = getMeasuredHeight();
+        if (width > height) {
+            size = height;
+        } else {
+            size = width;
+        }
+        setMeasuredDimension(size, size);
+    }
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -67,21 +79,5 @@ public class RoundBar extends View {
         canvas.drawArc(new RectF(getMeasuredWidth()/2-sRadius,getMeasuredHeight()/2-sRadius,getMeasuredWidth()/2+sRadius,getMeasuredHeight()/2+sRadius), 0, 360, false, makePaint(Color.BLACK,40));
         canvas.drawArc(new RectF(getMeasuredWidth()/2-sRadius,getMeasuredHeight()/2-sRadius,getMeasuredWidth()/2+sRadius,getMeasuredHeight()/2+sRadius), 270, 60+90, false, sPaint3);
 
-
-
-
-
-        sTriangle=new Path();
-        sTriangle.moveTo(0,0);
-        sTriangle.lineTo(0,(float)(getMeasuredHeight()*.75));
-        sTriangle.lineTo(getMeasuredWidth(), 0);
-
-
-        sRectanglePaint=new Paint(Paint.ANTI_ALIAS_FLAG);
-        sRectanglePaint.setColor(Color.BLACK);
-        sRectanglePaint.setStyle(Paint.Style.FILL);
-        sRectanglePaint.setAlpha(150);
-        canvas.drawPath(sTriangle,sRectanglePaint);
-        // draw progress line
     }
 }
