@@ -17,9 +17,10 @@ import android.view.View;
  */
 public class RoundBar extends View {
     private int color1,color2,color3;
+    private float sMaxRadius;
     private Paint sPaint1,sPaint2,sPaint3;
 
-    private float sStrokeWidth;
+    private float sStrokeWidth,sPaddingBetweenArcs,sRadius,sPadding;
 
     private int DEFAULT_COLOR= Color.BLUE;
     public RoundBar(Context context, AttributeSet attrs){
@@ -34,44 +35,33 @@ public class RoundBar extends View {
         }
         init();
     }
-    private Paint makePaint(int sColor){
-        return makePaint(sColor,255);
-    }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        sStrokeWidth=(.04f)*getMeasuredWidth();
-        sPaint1=makePaint(color1);
-        sPaint2=makePaint(color2);
-        sPaint3=makePaint(color3);
+        sStrokeWidth=(.02f)*getMeasuredWidth();
+        sPaddingBetweenArcs=40;
+        sPadding=sStrokeWidth*2;
+        sMaxRadius=getMeasuredWidth()/2-sPadding;
     }
-    private Paint makePaint(int sColor, int sShadow){
+    private Paint makePaint(int sColor, int sAlpha,float sStrokeWidth){
         Paint sPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
         sPaint.setStyle(Paint.Style.STROKE);
         sPaint.setStrokeWidth(sStrokeWidth);
         sPaint.setStrokeCap(Paint.Cap.ROUND);
         sPaint.setColor(sColor);
-        float sRadius=340;
-        sPaint.setAlpha(sShadow);
+        sRadius=340;
+        sPaint.setAlpha(sAlpha);
         sPaint.setShader(new LinearGradient(getMeasuredWidth()/2-(sRadius*4),getMeasuredHeight()/2-(sRadius*4),getMeasuredWidth()/2+(sRadius*4),getMeasuredHeight()/2+(sRadius*4), sColor, sColor+360, Shader.TileMode.MIRROR));
         return sPaint;
     }
+
     private void init(){
+        ;
     }
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        //Outer Circle
-        float sRadius=getMeasuredWidth()/2;
-        canvas.drawArc(new RectF(getMeasuredWidth()/2-sRadius,getMeasuredHeight()/2-sRadius,getMeasuredWidth()/2+sRadius,getMeasuredHeight()/2+sRadius), 0, 360, false, makePaint(Color.BLACK,40));
-        canvas.drawArc(new RectF(getMeasuredWidth()/2-sRadius,getMeasuredHeight()/2-sRadius,getMeasuredWidth()/2+sRadius,getMeasuredHeight()/2+sRadius), 270, 70+90, false, sPaint1);
-        sRadius-=sStrokeWidth;
-        canvas.drawArc(new RectF(getMeasuredWidth()/2-sRadius,getMeasuredHeight()/2-sRadius,getMeasuredWidth()/2+sRadius,getMeasuredHeight()/2+sRadius), 0, 360, false, makePaint(Color.BLACK,40));
-        canvas.drawArc(new RectF(getMeasuredWidth()/2-sRadius,getMeasuredHeight()/2-sRadius,getMeasuredWidth()/2+sRadius,getMeasuredHeight()/2+sRadius), 270, 80+90, false, sPaint2);
-        sRadius-=sStrokeWidth;
-        canvas.drawArc(new RectF(getMeasuredWidth()/2-sRadius,getMeasuredHeight()/2-sRadius,getMeasuredWidth()/2+sRadius,getMeasuredHeight()/2+sRadius), 0, 360, false, makePaint(Color.BLACK,40));
-        canvas.drawArc(new RectF(getMeasuredWidth()/2-sRadius,getMeasuredHeight()/2-sRadius,getMeasuredWidth()/2+sRadius,getMeasuredHeight()/2+sRadius), 270, 60+90, false, sPaint3);
-
+        canvas.drawArc(new RectF(getMeasuredWidth()/2-sMaxRadius,getMeasuredHeight()/2-sMaxRadius,getMeasuredWidth()/2+sMaxRadius,getMeasuredHeight()/2+sMaxRadius), 0, 120, false, makePaint(color1,255,sStrokeWidth));
     }
 }
